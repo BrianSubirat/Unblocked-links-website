@@ -175,11 +175,110 @@
     .category:nth-child(2) { animation-delay: 0.1s; }
     .category:nth-child(3) { animation-delay: 0.2s; }
     .category:nth-child(4) { animation-delay: 0.3s; }
+
+    /* New styles for features */
+    .search-container {
+      margin-bottom: 20px;
+    }
+
+    #search {
+      width: 100%;
+      padding: 12px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--secondary);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    #search:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(125, 211, 252, 0.2);
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-online {
+      background-color: #22c55e;
+    }
+
+    .status-offline {
+      background-color: var(--warning);
+    }
+
+    .copy-button {
+      background: var(--secondary);
+      border: none;
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.2s;
+    }
+
+    .copy-button:hover {
+      background: var(--primary);
+    }
+
+    .copied {
+      background: #22c55e;
+    }
+
+    #status-count {
+      text-align: right;
+      color: #9ca3af;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--secondary);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: var(--hover);
+    }
+
+    [data-theme="light"] {
+      --primary: #0ea5e9;
+      --secondary: #3b82f6;
+      --background: #f1f5f9;
+      --card-bg: #ffffff;
+      --hover: #e2e8f0;
+      --text: #1e293b;
+    }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Theme</button>
+  
   <div class="container">
     <h1>Proxy and unblocked website links by Brian</h1>
+
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Search links..." oninput="filterLinks()">
+    </div>
+
+    <div id="status-count"></div>
 
     <p class="warning">If you're a teacher, please leave, and don't get the websites blocked.
     Warning: stop asking me for the waves proxy or other proxies, it's annoying and you're not gonna get it.</p>
@@ -187,46 +286,47 @@
     <div class="category">
       <h2>Proxies</h2>
       <div class="links">
-        <a href="https://papi.easynetti.biz/" target="_blank">https://papi.easynetti.biz/</a>
-        <a href="https://peepee.easynetti.biz" target="_blank">https://peepee.easynetti.biz</a>
-        <a href="https://petezahgames5.web.app/" target="_blank">https://petezahgames5.web.app</a>
-        <a href="https://petezahgames4.web.app/" target="_blank">https://petezahgames4.web.app/</a>
-        <a href="https://foryou.wearder.li/" target="_blank" class="not-working">https://foryou.wearder.li/<span class="note-indicator">(not working)</span></a>
-        <a href="https://login.i-ready.com.de/" target="_blank">https://login.i-ready.com.de/</a>
-        <a href="https://ubyis.top" target="_blank">https://ubyis.top</a>
-        <a href="https://lesson2.guru/" target="_blank">https://lesson2.guru/</a>
-        <a href="https://ducksum.com/" target="_blank" class="not-working"><span class="note-indicator">(games not working)</span>ducksum.com/</a>
-        <a href="https://ram.kdot.cam/" target="_blank">RammerHead proxy</a>
-        <a href="https://study.info.north-kazakhstan.su/" target="_blank">Space proxy</a>
-        <a href="https://info.faizinternational.com.np/" target="_blank">Space proxy</a>
-        <a href="https://clothing.faizinternational.com.np/" target="_blank">Space proxy</a>
-        <a href="https://spacejam.faizinternational.com.np/" target="_blank">Eternal proxy</a>
-        <a href="https://eternal.faizinternational.com.np/" target="_blank">Eternal proxy</a>
+        <a href="https://papi.easynetti.biz/" target="_blank"><span class="status-indicator"></span>https://papi.easynetti.biz/<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://peepee.easynetti.biz" target="_blank"><span class="status-indicator"></span>https://peepee.easynetti.biz<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://pig.easynetti.biz" target="_blank"><span class="status-indicator"></span>https://pig.easynetti.biz<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://petezahgames5.web.app/" target="_blank"><span class="status-indicator"></span>https://petezahgames5.web.app/<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://petezahgames4.web.app/" target="_blank"><span class="status-indicator"></span>https://petezahgames4.web.app/<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://foryou.wearder.li/" target="_blank" class="not-working"><span class="status-indicator"></span>https://foryou.wearder.li/<span class="note-indicator">(not working)</span><button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://login.i-ready.com.de/" target="_blank"><span class="status-indicator"></span>https://login.i-ready.com.de/<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://ubyis.top" target="_blank"><span class="status-indicator"></span>https://ubyis.top<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://lesson2.guru/" target="_blank"><span class="status-indicator"></span>https://lesson2.guru/<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://ducksum.com/" target="_blank" class="not-working"><span class="status-indicator"></span><span class="note-indicator">(games not working)</span>ducksum.com/<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://ram.kdot.cam/" target="_blank"><span class="status-indicator"></span>RammerHead proxy<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://study.info.north-kazakhstan.su/" target="_blank"><span class="status-indicator"></span>Space proxy<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://info.faizinternational.com.np/" target="_blank"><span class="status-indicator"></span>Space proxy<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://clothing.faizinternational.com.np/" target="_blank"><span class="status-indicator"></span>Space proxy<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://spacejam.faizinternational.com.np/" target="_blank"><span class="status-indicator"></span>Eternal proxy<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://eternal.faizinternational.com.np/" target="_blank"><span class="status-indicator"></span>Eternal proxy<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
       </div>
     </div>
 
     <div class="category">
       <h2>Games</h2>
       <div class="links">
-        <a href="https://1v1lol.s3.amazonaws.com/index.html" target="_blank">1v1.LOL</a>
-        <a href="https://d2edvleactrkkb.cloudfront.net/" target="_blank">Big Mac Heroes</a>
-        <a href="https://asmallworldcup.s3.amazonaws.com/index.html" target="_blank">Mini Soccer Championship</a>
-        <a href="https://googlesnake.s3.amazonaws.com/index.html" target="_blank">Classic Snake Game</a>
-        <a href="https://baldis-basics.s3.amazonaws.com/index.html" target="_blank">Baldi's Basics</a>
-        <a href="https://quickdraw.withgoogle.com/" target="_blank">AI Drawing Challenge</a>
-        <a href="http://weavesilk.com/" target="_blank">Silk Art Creator</a>
-        <a href="https://footballlegends.s3.amazonaws.com/index.html" target="_blank">Soccer Legends 2D</a>
-        <a href="https://venturebucket.s3.us-east-2.amazonaws.com/games/Cookie-Clicker/index.html" target="_blank">Cookie Clicker</a>
-        <a href="https://motox3m.s3.amazonaws.com/index.html" target="_blank">Moto X3M Stunt Racing</a>
-        <a href="https://d2v2m3z6005g8q.cloudfront.net/" target="_blank">Monster Match</a>
+        <a href="https://1v1lol.s3.amazonaws.com/index.html" target="_blank"><span class="status-indicator"></span>1v1.LOL<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://d2edvleactrkkb.cloudfront.net/" target="_blank"><span class="status-indicator"></span>Big Mac Heroes<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://asmallworldcup.s3.amazonaws.com/index.html" target="_blank"><span class="status-indicator"></span>Mini Soccer Championship<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://googlesnake.s3.amazonaws.com/index.html" target="_blank"><span class="status-indicator"></span>Classic Snake Game<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://baldis-basics.s3.amazonaws.com/index.html" target="_blank"><span class="status-indicator"></span>Baldi's Basics<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://quickdraw.withgoogle.com/" target="_blank"><span class="status-indicator"></span>AI Drawing Challenge<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="http://weavesilk.com/" target="_blank"><span class="status-indicator"></span>Silk Art Creator<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://footballlegends.s3.amazonaws.com/index.html" target="_blank"><span class="status-indicator"></span>Soccer Legends 2D<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://venturebucket.s3.us-east-2.amazonaws.com/games/Cookie-Clicker/index.html" target="_blank"><span class="status-indicator"></span>Cookie Clicker<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://motox3m.s3.amazonaws.com/index.html" target="_blank"><span class="status-indicator"></span>Moto X3M Stunt Racing<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://d2v2m3z6005g8q.cloudfront.net/" target="_blank"><span class="status-indicator"></span>Monster Match<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
       </div>
     </div>
 
     <div class="category">
       <h2>Unblocked AI</h2>
       <div class="links">
-        <a href="https://copilot.microsoft.com/" target="_blank">Microsoft Copilet</a>
-        <a href="https://myperfectwords.com/essaybot" target="_blank">Essay writer</a>
+        <a href="https://copilot.microsoft.com/" target="_blank"><span class="status-indicator"></span>Microsoft Copilet<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
+        <a href="https://myperfectwords.com/essaybot" target="_blank"><span class="status-indicator"></span>Essay writer<button class="copy-button" onclick="copyLink(event)">Copy</button></a>
       </div>
     </div>
 
@@ -234,12 +334,73 @@
   </div>
 
   <script>
-    // Simple email obfuscation
+    // Email obfuscation
     const email = 'bs097342@greececsdstudent.org';
     document.getElementById('contact').textContent = email.split('').reverse().join('');
     setTimeout(() => {
       document.getElementById('contact').textContent = email;
     }, 500);
+
+    // Search functionality
+    function filterLinks() {
+      const searchTerm = document.getElementById('search').value.toLowerCase();
+      const links = document.querySelectorAll('.links a');
+      let visibleCount = 0;
+      
+      links.forEach(link => {
+        const text = link.textContent.toLowerCase();
+        const isVisible = text.includes(searchTerm);
+        link.style.display = isVisible ? '' : 'none';
+        if (isVisible) visibleCount++;
+      });
+
+      document.getElementById('status-count').textContent = `Showing ${visibleCount} of ${links.length} links`;
+    }
+
+    // Link status checker
+    async function checkLinkStatus(link) {
+      try {
+        const response = await fetch(link, { mode: 'no-cors' });
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    // Check all links status
+    document.querySelectorAll('.links a').forEach(async (link) => {
+      const indicator = link.querySelector('.status-indicator');
+      const isWorking = await checkLinkStatus(link.href);
+      indicator.classList.add(isWorking ? 'status-online' : 'status-offline');
+    });
+
+    // Copy link functionality
+    function copyLink(event) {
+      event.preventDefault();
+      const link = event.target.parentElement.href;
+      navigator.clipboard.writeText(link);
+      
+      const button = event.target;
+      button.classList.add('copied');
+      button.textContent = 'Copied!';
+      
+      setTimeout(() => {
+        button.classList.remove('copied');
+        button.textContent = 'Copy';
+      }, 2000);
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      const theme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', theme);
+      
+      const button = document.querySelector('.theme-toggle');
+      button.textContent = theme === 'light' ? '🌙 Theme' : '☀️ Theme';
+    }
+
+    // Initialize status count
+    filterLinks();
   </script>
 </body>
 </html>
